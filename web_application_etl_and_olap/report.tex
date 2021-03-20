@@ -1,0 +1,214 @@
+\documentclass[titlepage]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+\usepackage{lipsum}
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{graphs}
+\usetikzlibrary{chains}
+\usetikzlibrary{positioning}
+\usetikzlibrary{quotes}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\usepackage{booktabs}
+\usepackage{tikz-network}
+\pagestyle{fancy}
+\usepackage{physics}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{subcaption}
+\usepackage{newfloat}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0em}
+
+\definecolor{background-color}{rgb}{0.95,0.95,0.92}
+
+\usepackage{minted}
+\usemintedstyle{solarized-dark}
+
+
+\newmintedfile[inputsql]{sql}{
+linenos,
+autogobble,
+breaklines,
+breakanywhere,
+style=solarized-dark,
+bgcolor=background-color
+}
+
+\newmintedfile[inputtext]{text}{
+autogobble,
+breaklines,
+breakanywhere,
+% style=solarized-dark,
+bgcolor=background-color
+}
+
+\fancyhead{}
+\lhead{\includegraphics[scale=0.13]{images/logo.png}}
+\rhead{Information Systems and Databases \\ 2020/2021\footnotesize}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\date{}
+
+\title{
+\includegraphics[scale=0.3]{images/logo.png}\\
+\vskip 0.5em
+\Huge Data Science and Engineering\\
+\LARGE Information Systems and Databases\\
+\vskip 2em
+\large Database Project, Part 3\\
+\vskip 2em
+\large Group 37\\
+\large 45 hours
+\vskip 2em
+\large a\_SIBD77L05\\
+\large Professor Inês Filipe
+}
+
+\author{
+Pedro Rio, 33\%\\
+%, 45\%\\
+\textit{MSc Data Science and Engineering}\\
+\textit{Instituto Superior Técnico}\\
+\textit{97241}
+% 3 + 3 + 3 = 9
+\and
+Sebastião Maia Cerqueira, 33\%\\
+%, 35\%\\
+\textit{MSc Data Science and Engineering}\\
+\textit{Instituto Superior Técnico}\\
+\textit{97108}
+% 3 + 3 + 1 = 7
+\and
+Sebastião Almeida, 33\%\\
+%\%\\
+\textit{MSc Data Science and Engineering}\\
+\textit{Instituto Superior Técnico}\\
+\textit{97115}
+% 1 + 3 = 4
+}
+
+\begin{document}
+
+    \maketitle
+    \onecolumn
+
+    \section*{Integrity Constraints}
+    (IC1) For every transformer, pv must correspond to the voltage of the busbar identified by pbbid.
+    \inputsql{integrity_constraints/ic1.sql}
+    (IC2) For every transformer, sv must correspond to the voltage of the busbar identified by sbbid.
+    \inputsql{integrity_constraints/ic2.sql}
+
+    (IC5) For every analysis concerning a transformer, the name, address values cannot coincide
+    with sname, saddress values of the substation where the transformer is located (i.e., gpslat
+    and gpslong have the same values in transformer and substation).
+    \inputsql{integrity_constraints/ic5.sql}
+
+    \section*{View}
+    \inputsql{view.sql}
+
+    \section*{SQL}
+
+    Who are the analysts that have analyzed every incident of element ‘B-789’?
+    Since incidents can only be analysed once, then at most 1 supervisor can have analyzed
+    every incident of a single element.
+
+    \inputsql{queries/q1.sql}
+    \inputtext{queries/a1.txt}
+
+    Who are the supervisors that do not supervise substations south of Rio Maior (Portugal) Rio Maior coordinates: 39.336775, -8.936379 (cf. Google Maps)?
+
+    \inputsql{queries/q2.sql}
+    \inputtext{queries/a2.txt}
+
+    What are the elements with the smallest amount of incidents?
+    For this query, we include elements with no incidents, since those are obviously the ones with the smallest amount of incidents.
+
+    \inputsql{queries/q3.sql}
+    \inputtext{queries/a3.txt}
+
+    How many substations does each supervisor supervise? (including supervisors that do not
+    supervise any at the moment)
+
+    \inputsql{queries/q4.sql}
+    \inputtext{queries/a4.txt}
+
+    \section*{Application Development}
+
+    The web application was deployed to sigma and is available at
+    \href{https://web.tecnico.ulisboa.pt/~pedrorio/sibd}{web.tecnico.ulisboa.pt/~pedrorio/sibd},
+    a non-root route as that the root had already a web application running.
+    The application was deployed through sftp to the \textit{web/sibs} folder,
+    before executing the \textit{run.sh} script to add the necessary afs permissions
+    and install the required python libraries.
+
+    The web server is running apache http and there is no application server.
+    The web server executes the appropriate cgi python script according to the user route,
+    and the script makes the connection to the postgres database.
+    As such, there is no direct contact between the client and the database.
+
+    There are four namespaces in the application: substation, busbar, transformer and non\_line\_incident.
+    Each one includes files to add and create non-existing models, as well as list, edit, update and delete
+    models that already exist.
+    Several jinja2 templates are used to generate the html to add new models and list and edit existing ones.
+    Each file uses transactions where several models need to be manipulated and is protected against sql injection.
+
+    \section*{Indices}
+
+    To optimise a query to get the number of transformers with a given primary voltage
+    by locality, two indexes need to be created.
+    The first is a hash index on the primary voltage column of the substation table, as the primary voltage
+    only needs to be constrained to a certain value (equality query), and the second is a b+tree index on the locality
+    of the transformer table, which is meant to help with the group by clause.
+    Finally, since the natural join in the query will use the primary key of the substation table, there will already be
+    an index automatically created by most DBMS on the primary key (which happens to be composite), so there is already
+    an index that can be used for index-joins, and no index needs to be created there.
+
+    \inputsql{indices/transformer_locality_substation_pv.sql}
+
+    For this query, we suggest the creation of a B+tree over the description column, using the INCLUDE clause to include
+    the id attribute in the index.
+    Our reasoning is the following:
+    (instant, id) is already the primary key of the incident table, and, therefore, there should already be a (composite)
+    index automatically created over those two attributes.
+    It is vital that said index is a B+Tree index, since we will
+    be doing a range query over that index to select the id of the records that fall inside the desired instant interval.
+    If, for some reason, the index automatically created is NOT a B+Tree, then we also suggest the creation of a B+Tree
+    index over instant, with the INCLUSION of the id attribute in the index record, to allow for an index-only scan.
+    The selection over the description attribute, since it is a "like" clause that is specifically a prefix, will be
+    essentially a range query.
+    If we consider a B+tree, which will use alphabetical order, we just have to navigate to the first element,
+    in alphabetical order that starts with the given prefix, and scan the index forward until the first element that starts
+    with a prefix that is alphabetically after the prefix we want.
+    That's why we suggest the creation of a B+tree over the
+    description attribute, and we imagine the query being answered by doing an index-only scan on the (instant, id) index
+    to retrieve the id of the records in the desired instant, simultaneously with an index-only scan on the description index
+    (that, to recall, includes the id attribute) to retrieve the (description, id) records, followed and finished by
+    an intersection on the id attribute of the result of the two index-only scans.
+
+    A note on the INCLUDE clause: If our DBMS does not support INCLUDE (Postgres does), then we suggest composite indexes
+    instead.
+    It's better with the INCLUDE since we only want to query over one of the attributes, we just want the other attribute
+    there to allow for an index-only scan, and the composite index has a heavier update computational burden than an index
+    over just one attribute, with a small storage increase from including the second attribute (and that increase is also
+    present in a composite index).
+
+    \inputsql{indices/incident_id_description_instant.sql}
+
+    \section*{Multidimensional Model}
+    \inputsql{star_schema.sql}
+
+\end{document}

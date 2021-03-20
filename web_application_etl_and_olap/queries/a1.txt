@@ -1,0 +1,4 @@
+     name     |    address
+--------------+----------------
+ Ruby Tuesday | Rolling Street
+(1 row)

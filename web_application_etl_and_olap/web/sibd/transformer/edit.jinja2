@@ -1,0 +1,20 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <form action="update.cgi" method="patch">
+        <p>ID: <input type="text" name="id" value="{{ transformer.id }}"/></p>
+        <p>Primary Voltage: <input type="text" name="pv" value="{{ transformer.pv }}"/></p>
+        <p>Secondary Voltage: <input type="text" name="sv" value="{{ transformer.sv }}"/></p>
+        <p>Latitude: <input type="text" name="gpslat" value="{{ transformer.gpslat }}"/></p>
+        <p>Longitude: <input type="text" name="gpslong" value="{{ transformer.gpslong }}"/></p>
+        <p>Primary Busbar ID: <input type="text" name="pbbid" value="{{ transformer.pbbid }}"/></p>
+        <p>Secondary Busbar ID: <input type="text" name="sbbid" value="{{ transformer.sbbid }}"/></p>
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <a href="index.cgi">Go back</a>
+{% endblock %}

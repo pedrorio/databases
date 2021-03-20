@@ -1,0 +1,17 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <form action="update.cgi" method="patch">
+        <p>ID: <input type="text" name="id" value="{{ non_line_incident.id }}"/></p>
+        <p>Instant: <input type="text" name="instant" value="{{ non_line_incident.instant }}"/></p>
+        <p>Description: <input type="text" name="description" value="{{ non_line_incident.description }}"/></p>
+        <p>Severity: <input type="text" name="severity" value="{{ non_line_incident.severity }}"/></p>
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <a href="index.cgi">Go back</a>
+{% endblock %}

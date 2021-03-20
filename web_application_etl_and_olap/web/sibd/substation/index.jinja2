@@ -1,0 +1,39 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table border="5">
+        <tr>
+            <td>Latitude</td>
+            <td>Longitude</td>
+            <td>Locality</td>
+            <td>Supervisor Name</td>
+            <td>Supervisor Address</td>
+        </tr>
+
+        {% for substation in substations %}
+            <tr>
+                <td>{{ substation.gpslat }}</td>
+                <td>{{ substation.gpslong }}</td>
+                <td>{{ substation.locality }}</td>
+                <td>{{ substation.sname }}</td>
+                <td>{{ substation.saddress }}</td>
+                <td>
+                    <span>
+                        <a href="edit.cgi?gpslat={{ substation.gpslat }}&gpslong={{ substation.gpslong }}">Edit</a>
+                        <form action="delete.cgi" method="delete">
+                            <input type="hidden" name="gpslat" value="{{ substation.gpslat }}"/>
+                            <input type="hidden" name="gpslong" value="{{ substation.gpslong }}"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <a href="new.cgi">Add a new Substation</a>
+{% endblock %}

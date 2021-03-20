@@ -1,0 +1,7 @@
+**/*.env
+**/__pycache__
+**/.idea
+**/_minted-report
+**/out/
+!**/out/report.pdf
+!**/out/cover.pdf

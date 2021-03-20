@@ -1,0 +1,34 @@
+  severity   | locality | week_day  | count 
+-------------+----------+-----------+-------
+             |          |           |     5
+ Very Urgent | Hogwarts | Tuesday   |     1
+ Urgent      | Narnia   | Thursday  |     1
+ Standard    | Hogwarts | Sunday    |     1
+ Standard    | Hogwarts | Wednesday |     1
+ Urgent      | Hogwarts | Monday    |     1
+ Very Urgent | Hogwarts |           |     1
+ Standard    | Hogwarts |           |     2
+ Urgent      | Hogwarts |           |     1
+ Urgent      | Narnia   |           |     1
+ Standard    |          |           |     2
+ Very Urgent |          |           |     1
+ Urgent      |          |           |     2
+             | Hogwarts | Tuesday   |     1
+             | Hogwarts | Sunday    |     1
+             | Hogwarts | Wednesday |     1
+             | Narnia   | Thursday  |     1
+             | Hogwarts | Monday    |     1
+             | Hogwarts |           |     4
+             | Narnia   |           |     1
+ Standard    |          | Sunday    |     1
+ Urgent      |          | Thursday  |     1
+ Standard    |          | Wednesday |     1
+ Very Urgent |          | Tuesday   |     1
+ Urgent      |          | Monday    |     1
+             |          | Monday    |     1
+             |          | Thursday  |     1
+             |          | Wednesday |     1
+             |          | Tuesday   |     1
+             |          | Sunday    |     1
+(30 rows)
+

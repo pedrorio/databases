@@ -1,0 +1,9 @@
+ substations_with_least_incidents
+----------------------------------
+ B-202
+ B-303
+ B-505
+ T-101
+ T-111
+ T-808
+(6 rows)

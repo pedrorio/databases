@@ -1,0 +1,15 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <form action="update.cgi" method="patch">
+        <p><input type="hidden" name="id" value="{{ busbar.id }}"/></p>
+        <p>Voltage: <input type="text" name="voltage" value="{{ busbar.voltage }}"/></p>
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <a href="index.cgi">Go back</a>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table border="5">
+        <tr>
+            <td>ID</td>
+            <td>Primary Voltage</td>
+            <td>Secondary Voltage</td>
+            <td>Latitude</td>
+            <td>Longitude</td>
+            <td>Primary Busbar ID</td>
+            <td>Secondary Busbar ID</td>
+        </tr>
+
+        {% for transformer in transformers %}
+            <tr>
+                <td>{{ transformer.id }}</td>
+                <td>{{ transformer.pv }}</td>
+                <td>{{ transformer.sv }}</td>
+                <td>{{ transformer.gpslat }}</td>
+                <td>{{ transformer.gpslong }}</td>
+                <td>{{ transformer.pbbid }}</td>
+                <td>{{ transformer.sbbid }}</td>
+                <td>
+                    <span>
+                        <a href="edit.cgi?id={{ transformer.id }}">Edit</a>
+                        <form action="delete.cgi" method="delete">
+                            <input type="hidden" name="id" value="{{ transformer.id }}"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <a href="new.cgi">Add a new Transformer</a>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <form action="update.cgi" method="patch">
+        <p><input type="hidden" name="gpslat" value="{{ substation.gpslat }}"/></p>
+        <p><input type="hidden" name="gpslong" value="{{ substation.gpslong }}"/></p>
+        <p>Locality: <input type="text" name="locality" value="{{ substation.locality }}"/></p>
+        <p>Supervisor Name: <input type="text" name="sname" value="{{ substation.sname }}"/></p>
+        <p>Supervisor Address: <input type="text" name="saddress" value="{{ substation.saddress }}"/></p>
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <a href="index.cgi">Go back</a>
+{% endblock %}

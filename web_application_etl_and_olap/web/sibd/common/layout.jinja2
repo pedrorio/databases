@@ -1,0 +1,31 @@
+Content-type:text/html
+
+<html lang="en">
+<head>
+    {% block head %}
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+    {% endblock %}
+</head>
+<body>
+<h3>Power Grid</h3>
+<div id="navigation">
+    <a href="{{ website_root }}">Home</a>
+    <a href="{{ website_root }}/busbar/index.cgi">Bus Bar</a>
+    <a href="{{ website_root }}/substation/index.cgi">Substation</a>
+    <a href="{{ website_root }}/transformer/index.cgi">Transformer</a>
+    <a href="{{ website_root }}/non_line_incident/index.cgi">Non Line Incidents</a>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+<div id="footer">
+    {% block footer %}
+    {% endblock %}
+</div>
+</body>
+</html>

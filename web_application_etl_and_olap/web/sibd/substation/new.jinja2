@@ -1,0 +1,18 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <form action="create.cgi" method="post">
+        <p>Latitude: <input type="text" name="gpslat"/></p>
+        <p>Longitude: <input type="text" name="gpslong"/></p>
+        <p>Locality: <input type="text" name="locality"/></p>
+        <p>Supervisor Name: <input type="text" name="sname"/></p>
+        <p>Supervisor Address: <input type="text" name="saddress"/></p>
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <a href="index.cgi">Go back</a>
+{% endblock %}

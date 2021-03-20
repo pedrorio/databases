@@ -1,0 +1,32 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table border="5">
+        <tr>
+            <td>ID</td>
+            <td>Voltage</td>
+        </tr>
+
+        {% for busbar in busbars %}
+            <tr>
+                <td>{{ busbar.id }}</td>
+                <td>{{ busbar.voltage }}</td>
+                <td>
+                    <span>
+                        <a href="edit.cgi?id={{ busbar.id }}">Edit</a>
+                        <form action="delete.cgi" method="delete">
+                            <input type="hidden" name="id" value="{{ busbar.id }}"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <a href="new.cgi">Add a new Bus Bar</a>
+{% endblock %}

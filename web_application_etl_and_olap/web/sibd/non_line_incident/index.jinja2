@@ -1,0 +1,37 @@
+{% extends "common/layout.jinja2" %}
+{% set website_root = website_root %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table border="5">
+        <tr>
+            <td>Instant</td>
+            <td>ID</td>
+            <td>Description</td>
+            <td>Severity</td>
+        </tr>
+
+        {% for non_line_incident in non_line_incidents %}
+            <tr>
+                <td>{{ non_line_incident.instant }}</td>
+                <td>{{ non_line_incident.id }}</td>
+                <td>{{ non_line_incident.description }}</td>
+                <td>{{ non_line_incident.severity }}</td>
+                <td>
+                    <span>
+                        <a href="edit.cgi?id={{ non_line_incident.id }}&instant={{ non_line_incident.instant }}">Edit</a>
+                        <form action="delete.cgi" method="delete">
+                            <input type="hidden" name="id" value="{{ non_line_incident.id }}"/>
+                            <input type="hidden" name="instant" value="{{ non_line_incident.instant }}"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <a href="new.cgi">Add a new Non Line Incident</a>
+{% endblock %}

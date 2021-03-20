@@ -1,0 +1,96 @@
+\documentclass[titlepage]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+\usepackage{lipsum}
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{physics}
+\usepackage{mathrsfs}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+
+\usepackage{subcaption}
+\usepackage{newfloat}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\usepackage{booktabs}
+
+\usepackage{multirow}
+\usepackage{graphicx}
+
+\date{}
+
+\title{
+\includegraphics[scale=0.3]{images/logo.png}\\
+\vskip 0.5em
+\Huge Data Science and Engineering\\
+\LARGE Information Systems and Databases\\
+\vskip 2em
+\large Part 2\\
+\vskip 2em
+\large Group 37\\
+\large 21 hours\\
+\vskip 2em
+\large a\_SIBD77L05\\
+\large Professor Inês Filipe
+}
+
+\author{
+Pedro Rio, 38\%\\
+\textit{MSc Data Science and Engineering}\\
+\textit{Instituto Superior Técnico}\\
+\textit{97241}
+% 8
+\and
+Sebastião Maia Cerqueira, 24\%\\
+\textit{MSc Data Science and Engineering}\\
+\textit{Instituto Superior Técnico}\\
+\textit{97108}
+% 5
+\and
+Sebastião Almeida, 38\%\\
+\textit{MSc Data Science and Engineering}\\
+\textit{Instituto Superior Técnico}\\
+\textit{97115}
+% 8
+}
+
+% Document
+\begin{document}
+    \maketitle
+    \cleardoublepage
+    \onecolumn
+
+        \section*{Choices, comments and ideas}
+
+        Throughout the "populate.sql" file, besides the INSERTS we used to show that our tables could correctly hold real world data, we also wrote various INSERT statements that are meant to be unsuccessful, to prove that our SQL implementation is indeed adjusted to the characteristics of the real world data.
+        Those inserts are commented in the file, not because they should be ignored in the evaluation, but in order for the file to be able to fully run without raising any errors.\\
+
+        We split the gps\_coords attribute into two different attributes, latitude and longitude, to be able to properly define those two measures with the correct NUMERIC data type.
+        This way, we fully guarantee no repeated locations, that could show up by mistake if we used a VARCHAR (an extra comma between the same two latitude and longitude values, for instance, would not violate the primary key uniqueness constraint but would be referring to the same real-world location, and that could raise some problems.
+        Since latitude and longitude are two very standardized values, used in the same way in the whole world, we decided to enforce their format.\\
+
+        For the attribute "severity" of the "incident" table, we thought the best idea would be to limit the number of possible values to a group of 5 words ("Not Urgent", "Standard", "Urgent", "Very Urgent","Immediate"), which would be the possible severity categories.
+        To do this, we though about using the ENUM data type, but it is not present in Postgres.
+        We researched it, and found that the best way to do it would be to create a new TYPE, that contained those 5 words, and to use that new type as the data type for "severity".
+        Since we did not learn about this approach in class, we decided to leave it out of the model, but we highlight that it could be an interesting option.\\
+
+        To implement IC-5, we could not use CHECK constraints, since they can only refer to data present in the table they are associated with, and IC-5 would require accessing multiple tables.
+        We considered using triggers, since that would allows us to enforce that constraint, but came to an agreement that the lack of mention of triggers in the project description meant that we were not meant to used them in this stage of the project, and therefore we included IC-5 as a textual IC (comment) in the analyses table.\\
+
+        Since we lacked example values for our tables, and a concrete description of the data they would hold, it was sometimes impossible to evaluate whether we should define some columns as NOT NULL or not.
+        As an example, for the line "impedance" attribute, and the bus bar "voltage" one, we decided to enforce a NOT NULL rule, since it made sense that the equipment in the network should probably always be configured to a certain value, in order to properly function.
+        As an opposite example, for the "report" attribute of analyses, we decided against the NOT NULL constraint, since, at a given point in time, the database could already have registered a certain analyst as analysing a certain incident, but he could very well not have submitted the report yet, and therefore the report attribute could be NULL until he does.\\
+
+\end{document}

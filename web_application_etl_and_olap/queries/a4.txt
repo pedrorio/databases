@@ -1,0 +1,6 @@
+     name      |       address       | count
+---------------+---------------------+-------
+ John Doe      | Street With No Name |     3
+ Gary Mediocre | Average Street      |     0
+ Real Person   | Real Street         |     1
+(3 rows)
